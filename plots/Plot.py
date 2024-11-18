@@ -1,14 +1,15 @@
 from objects.Variables import Variables
 from plots.Plot3d import Plot3d
 from plots.Plot2d import Plot2d
-
+from functions.SimpleFunction import SimpleFunction
+import tensorflow
 
 class Plot:
     '''
     labels is string array
     title is string
     '''
-    def __init__(self,variables:Variables,labels,title,function):
+    def __init__(self,variables:Variables,labels,title,function:SimpleFunction):
         self.variables = variables
         self.labels = labels
         self.title = title

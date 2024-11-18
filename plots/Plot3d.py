@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plot
 import numpy
-
+from functions.SimpleFunction import SimpleFunction
 
 class Plot3d:
 
@@ -9,7 +9,7 @@ class Plot3d:
     labels is string array
 
     '''
-    def __init__(self,variables,labels,title,function):
+    def __init__(self,variables,labels,title,function:SimpleFunction):
         if (len(variables) + 1) != len(labels):
             raise ValueError("length of labels does not equal to length of variables")
 
@@ -23,7 +23,7 @@ class Plot3d:
         ax = fig.add_subplot(111, projection='3d')
 
         x,y = numpy.meshgrid(self.variables[0],self.variables[1])
-        z = self.function(x,y)
+        z = self.function.calculate_as_tensor_flow([x,y])
         ax.plot_surface(x,y,z,
                         cmap='viridis', edgecolor='k', alpha=0.8)
 

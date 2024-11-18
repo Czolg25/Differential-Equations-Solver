@@ -1,22 +1,11 @@
-from objects.Space import Space
-from objects.Range import Range
-from objects.Variables import Variables
-from plots.Plot import Plot
-
-import numpy as np
-
-def f(x):
-    return tensorflow.pow(x,2)
-
-import tensorflow
+from repositories.TaskEquationRepository import TaskEquationRepository
+from services.EquationService import EquationService
+from examples.tasks.SimpleEquation import SimpleEquation
 
 if __name__ == '__main__':
+    task_repository = TaskEquationRepository()
+    equation_service = EquationService(task_repository)
 
-    space = Space(Range(-10,10))
-    points = space.split(10)
+    task_repository.add(SimpleEquation())
 
-    vars = Variables(points)
-    plot = Plot(vars,["a","b"],"ss",points)
-    p = plot.choose()
-    p.show()
-
+    equation_service.run(100)

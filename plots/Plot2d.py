@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plot
 import numpy
+import tensorflow
+from functions.SimpleFunction import SimpleFunction
 
 class Plot2d:
 
@@ -8,7 +10,7 @@ class Plot2d:
     labels is string array
 
     '''
-    def __init__(self,variables,labels,title,function):
+    def __init__(self,variables,labels,title,function:SimpleFunction):
         if (len(variables) + 1) != len(labels):
             raise ValueError("length of labels does not equal to length of variables")
 
@@ -18,10 +20,11 @@ class Plot2d:
         self.function = function
 
     def show(self):
-        x = numpy.meshgrid(self.variables[0])
-        y = self.function(x)
+        x = tensorflow.transpose(tensorflow.convert_to_tensor(numpy.meshgrid(self.variables[0])))
 
-        plot.plot(x, y, label=self.title, color='blue', marker='o')
+        y = self.function.calculate_as_tensor_flow(x)
+
+        plot.plot(x, y, label=self.title, color='black')
 
         plot.title(self.title)
         plot.xlabel(self.labels[0])
