@@ -7,7 +7,7 @@ class SimpleFunction:
         pass
 
     def calculate_as_tensor_flow(self, x):
-        pass
+        return self.calculate(x)
 
     def calculate(self, x):
         pass

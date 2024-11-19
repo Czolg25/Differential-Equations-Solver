@@ -23,7 +23,12 @@ class EquationService:
         variables = Variables(space.split())
 
         plots = []
-        plots.append(Plot(variables,taskEquationData.get_labels(),taskEquationData.get_loss_function(),solution))
+        plots.append(Plot(variables,taskEquationData.get_labels(),taskEquationData.get_function_name()+f" - ai epochs: {epochs}",solution))
+        plots.append(Plot(variables,taskEquationData.get_labels(),taskEquationData.get_function_name()+f" error epochs: {epochs}",taskEquationData.
+                          get_error_function(solution)))
+        plots.append(
+            Plot(variables, taskEquationData.get_labels(), taskEquationData.get_function_name()+f" error(%) epochs: {epochs}", taskEquationData.
+                 get_error_abs_function(solution)))
 
         for plot in plots:
             plot.choose().show()
