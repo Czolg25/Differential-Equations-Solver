@@ -1,19 +1,26 @@
+from objects.space.Space import Space
+from objects.plot.PlotData import PlotData
 from plots.Plot2d import Plot2D
-import numpy
+from plots.Plot3d import Plot3D
+
+import matplotlib
+
+matplotlib.use('TkAgg')
 
 
 class ChoosePlot:
-    def __init__(self,x,y,z = None):
-        if x is None:
-            raise ValueError("x cannot be None")
-        if y is None:
-            raise ValueError("y cannot be None")
+    def __init__(self, space: Space, plot_data: PlotData = PlotData()):
+        if space is None:
+            raise ValueError("Space cannot be None")
 
-        self.__x = numpy.array(x) if not isinstance(x, numpy.ndarray) else x
-        self.__y = numpy.array(y) if not isinstance(y, numpy.ndarray) else y
-        self.__z = numpy.array(z) if z is not None and not isinstance(z, numpy.ndarray) else z
+        self.__space = space
+        self.__plot_data = plot_data
 
     def choose(self):
-        if self.__z is None:
-            pass
-        return Plot2D(self.__x,self.__y)
+        dimension = self.__space.get_dimension()
+        if dimension == 2:
+            return Plot2D(self.__space.get_numpy_array(0), self.__space.get_numpy_array(1), self.__plot_data)
+        elif dimension == 3:
+            return Plot3D(self.__space.get_numpy_array(0), self.__space.get_numpy_array(1), self.__space.get_numpy_array(2), self.__plot_data)
+        else:
+            raise ValueError("Dimension not supported")
