@@ -9,18 +9,20 @@ matplotlib.use('TkAgg')
 
 
 class ChoosePlot:
-    def __init__(self, space: Space, plot_data: PlotData = PlotData()):
+    def __init__(self, space: Space,results, plot_data: PlotData = PlotData()):
         if space is None:
             raise ValueError("Space cannot be None")
 
         self.__space = space
         self.__plot_data = plot_data
+        self.__results = results
 
     def choose(self):
         dimension = self.__space.get_dimension()
-        if dimension == 2:
-            return Plot2D(self.__space.get_numpy_array(0), self.__space.get_numpy_array(1), self.__plot_data)
-        elif dimension == 3:
-            return Plot3D(self.__space.get_numpy_array(0), self.__space.get_numpy_array(1), self.__space.get_numpy_array(2), self.__plot_data)
+        mesh = self.__space.get_mesh_numpy_array()
+        if dimension == 1:
+            return Plot2D(mesh[0], self.__results, self.__plot_data)
+        elif dimension == 2:
+            return Plot3D(mesh[0], mesh[1], self.__results, self.__plot_data)
         else:
             raise ValueError("Dimension not supported")
