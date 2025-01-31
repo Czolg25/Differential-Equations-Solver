@@ -13,7 +13,7 @@ class Space:
         self.__points = points
 
     def get_numpy_array(self,index:int):
-        return self.__points[index]
+        return self.__points[index].copy()
 
     def get_mesh_numpy_array(self):
         return tensorflow.meshgrid(*self.__points, indexing='ij')
@@ -21,17 +21,49 @@ class Space:
     def get_dimension(self):
         return len(self.__points)
 
-    def get_tensorflow_array(self):
-        axes_array = []
+    def get_shape(self):
+        if self.get_dimension() == 1:
+            raise ValueError("Dimension not supported")
 
-        for axe in self.__points:
-            axe = tensorflow.constant(axe, shape=(len(axe), 1), dtype='float64')
-            axes_array.append(axe[:, 0])
+        axes = []
+        for i in range(len(self.__points)):
+            axes.append(self.get_numpy_array(i))
+        x = numpy.meshgrid(*axes)
+        return x[0].shape
 
-        mesh_grids = tensorflow.meshgrid(*axes_array, indexing='ij')
+    def get_points(self):
+        dimention = self.get_dimension()
+        if dimention == 1: #in 2d
+            x = self.get_numpy_array(0)
 
-        reshaped_grids = [tensorflow.reshape(grid, [-1]) for grid in mesh_grids]
-        return tensorflow.stack(reshaped_grids, axis=1)
+            x_flat = x.flatten().reshape(-1, 1)
+            return self.__get_tensor_axis(x_flat)
+        if dimention == 2: #in 3d
+            x = self.get_numpy_array(0)
+            y = self.get_numpy_array(1)
+
+            x, y = numpy.meshgrid(x, y)
+
+            x_flat = x.flatten().reshape(-1, 1)
+            y_flat = y.flatten().reshape(-1, 1)
+
+            return self.__get_tensor_axis(x_flat), self.__get_tensor_axis(y_flat)
+        raise ValueError('dimension must be 2 or 3')
+
+
+    def __get_tensor_axis(self,x:numpy.ndarray):
+        return tensorflow.constant(x, dtype='float64')
+    # def get_tensorflow_array(self):
+    #     axes_array = []
+    #
+    #     for axe in self.__points:
+    #         axe = tensorflow.constant(axe, shape=(len(axe), 1), dtype='float64')
+    #         axes_array.append(axe[:, 0])
+    #
+    #     mesh_grids = tensorflow.meshgrid(*axes_array, indexing='ij')
+    #
+    #     reshaped_grids = [tensorflow.reshape(grid, [-1]) for grid in mesh_grids]
+    #     return tensorflow.stack(reshaped_grids, axis=1)
 
     def __get_axe_length(self,axe:numpy.ndarray):
         return len(axe)

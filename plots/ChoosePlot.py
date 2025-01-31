@@ -26,3 +26,5 @@ class ChoosePlot:
             return Plot3D(mesh[0], mesh[1], self.__results, self.__plot_data)
         else:
             raise ValueError("Dimension not supported")
+
+

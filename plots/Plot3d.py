@@ -8,7 +8,6 @@ class Plot3D:
     def __init__(self, x: numpy.ndarray, y: numpy.ndarray,z: numpy.ndarray, plot_data: PlotData):
         self.__x = x
         self.__y = y
-        print(z)
         self.__z = z
         self.__plot_data = plot_data
 
