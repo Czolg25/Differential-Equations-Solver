@@ -9,6 +9,8 @@ class PercentError(Function):
         self.__exact_solution = exact_solution
 
     def calculate(self, *vars):
+        if 0 in self.__exact_solution.calculate_as_numpy(*vars):
+            return None
         y = ((self.__exact_solution.calculate_as_numpy(*vars) - self.__solution.calculate_as_numpy(*vars)) * 100 /
              self.__exact_solution.calculate_as_numpy(*vars))
         return numpy.absolute(y)

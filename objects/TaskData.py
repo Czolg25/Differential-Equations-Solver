@@ -16,4 +16,4 @@ class TaskData:
         return self.__space_range
 
     def get_name(self):
-        return f"{self.__name} {self.equation.get_name()}"
+        return f"{self.__name} {self.get_equation().get_name()}"

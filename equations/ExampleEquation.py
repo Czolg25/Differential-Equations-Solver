@@ -3,7 +3,7 @@ from objects.Equation import *
 
 class ExampleEquation(Equation):
     def __init__(self, space: Space):
-        super().__init__(SolutionFunction(space, Loss()), ExactSolution())
+        super().__init__(SolutionFunction(space, Loss()), ExactSolution(),"y'=e^(-x/5)*cos(x)-y/5, y(0)=0")
 
 
 class Loss(LossFunction):
