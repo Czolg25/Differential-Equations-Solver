@@ -1,8 +1,9 @@
 import numpy
 import tensorflow
 
+
 class Space:
-    def __init__(self, points:[numpy.ndarray]):
+    def __init__(self, points: [numpy.ndarray]):
         if points is None:
             raise ValueError('points cannot be None')
         if len(points) == 0:
@@ -12,8 +13,14 @@ class Space:
 
         self.__points = points
 
-    def get_numpy_array(self,index:int):
+    def get_numpy_array(self, index: int):
         return self.__points[index].copy()
+
+    def get_points_to_neural_network(self):
+        points = []
+        for i in range(self.get_dimension()):
+            points.append(self.__get_tensor_axis(self.get_numpy_array(i)))
+        return points
 
     def get_mesh_numpy_array(self):
         return tensorflow.meshgrid(*self.__points, indexing='ij')
@@ -33,12 +40,12 @@ class Space:
 
     def get_points(self):
         dimention = self.get_dimension()
-        if dimention == 1: #in 2d
+        if dimention == 1:  #in 2d
             x = self.get_numpy_array(0)
 
             x_flat = x.flatten().reshape(-1, 1)
-            return self.__get_tensor_axis(x_flat)
-        if dimention == 2: #in 3d
+            return [self.__get_tensor_axis(x_flat)]
+        if dimention == 2:  #in 3d
             x = self.get_numpy_array(0)
             y = self.get_numpy_array(1)
 
@@ -50,9 +57,9 @@ class Space:
             return self.__get_tensor_axis(x_flat), self.__get_tensor_axis(y_flat)
         raise ValueError('dimension must be 2 or 3')
 
+    def __get_tensor_axis(self, x: numpy.ndarray):
+        return tensorflow.constant(x, shape=(len(x), 1), dtype='float64')
 
-    def __get_tensor_axis(self,x:numpy.ndarray):
-        return tensorflow.constant(x, dtype='float64')
     # def get_tensorflow_array(self):
     #     axes_array = []
     #
@@ -65,5 +72,5 @@ class Space:
     #     reshaped_grids = [tensorflow.reshape(grid, [-1]) for grid in mesh_grids]
     #     return tensorflow.stack(reshaped_grids, axis=1)
 
-    def __get_axe_length(self,axe:numpy.ndarray):
+    def __get_axe_length(self, axe: numpy.ndarray):
         return len(axe)
