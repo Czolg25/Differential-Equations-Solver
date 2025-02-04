@@ -1,16 +1,13 @@
 from repositories.TaskRepository import TasksRepository
 from services.TaskService import TaskService
 
-
-from tasks.ExampleTask import ExampleTask
-from tasks.ApproximationExampleTask import ApproximationExampleTask
-from tasks.Example2Task import Example2Task
+from tasks.ai.article.examples.ArticleExamplesImport import *
 
 if __name__ == '__main__':
     task_repository = TasksRepository()
     task_service = TaskService(task_repository)
 
-    task_repository.add_task(ApproximationExampleTask())
+    task_repository.add_task(SecondProblemLossTask())
 
-    task_service.solve(5000)
+    task_service.solve(1000)
 

@@ -17,7 +17,7 @@ class Loss(LossFunction):
             psi_p = tensorflow.zeros_like(x[0])
 
         x = x[0]
-        return psi_p - (numpy.exp(-x / 5) * numpy.cos(x) - y / 5)
+        return psi_p + y / 5 - (numpy.exp(-x / 5) * numpy.cos(x))
 
 
 class SolutionFunction(AISolution):

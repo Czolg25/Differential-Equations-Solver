@@ -37,13 +37,13 @@ class TaskService:
 
             abs_error_function = AbsError(ai_solution, exact_solution)
 
-            choose_plot = ChoosePlot(test_space, abs_error_function.calculate(test_space), PlotData(f"Absolute error {plot_title}"))
+            choose_plot = ChoosePlot(test_space, abs_error_function.calculate(test_space), PlotData(f"Absolute error {plot_title}",["x","Error"]))
             choose_plot.choose().plot()
 
             percent_error_function = PercentError(ai_solution, exact_solution)
             percent_error = percent_error_function.calculate(test_space)
             if percent_error is not None:
-                choose_plot = ChoosePlot(test_space, percent_error, PlotData(f"Error % {plot_title}"))
+                choose_plot = ChoosePlot(test_space, percent_error, PlotData(f"Error % {plot_title}",["x","Error (%)"]))
                 choose_plot.choose().plot()
 
         loss_array = ai_solution.get_loss_array()
