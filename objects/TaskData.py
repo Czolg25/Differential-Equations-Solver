@@ -17,3 +17,7 @@ class TaskData:
 
     def get_name(self):
         return f"{self.__name} {self.get_equation().get_name()}"
+
+    def get_task_name(self):
+        name = self.__name.split(" ")
+        return f'{name[0]} {name[1]}'

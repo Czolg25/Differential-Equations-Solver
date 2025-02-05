@@ -3,12 +3,12 @@ from objects.Equation import *
 
 class ThirdProblem(Equation):
     def __init__(self,solution:AISolution):
-        super().__init__(solution, ExactSolution(),"d^2f(x)/d^2x + 1/5 * df(x)/dx + f(x) = - 1/5 * e^-(x/5) * cos(x); f(0) = 0, f(1) = sin(1) * e^-(1/5)")
+        super().__init__(solution, ExactSolution(),"d^2f(x)/d^2x + 1/5 * df(x)/dx + f(x) = - 1/5 * e^-(x/5) * cos(x); f(0) = 0, f'(0) = 0")
 
 
 class Loss(LossFunction):
     def _left_side_of_the_equation(self, function, *x):
-        with tensorflow.GradientTape() as g:
+        with tensorflow.GradientTape(persistent=True) as g:
             for point in x:
                 g.watch(point)
             y = function(*x)
@@ -17,12 +17,16 @@ class Loss(LossFunction):
         differential = g.gradient(y, x)
         if differential is None:
             differential = tensorflow.zeros_like(x)
+        differential2 = g.gradient(differential, x)
+        if differential2 is None:
+            differential2 = tensorflow.zeros_like(x)
+        del g
 
-        return differential + y / 5
+        return differential2 + differential / 5 + y
 
     def _right_side_of_the_equation(self, function, *x):
         x = x[0]
-        return numpy.exp(-x / 5) * numpy.cos(x)
+        return -numpy.exp(-x / 5) / 5 * numpy.cos(x)
 
 class ExactSolution(Function):
     def calculate(self, *vars):

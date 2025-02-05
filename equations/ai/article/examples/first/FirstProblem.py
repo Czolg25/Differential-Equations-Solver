@@ -6,6 +6,7 @@ class FirstProblem(Equation):
         super().__init__(solution, ExactSolution(),"df(x)/dx + (x + (1+3x^2) / (1+x+x^3)) f(x) = x^3 + 2x + x^2 * (1 + 3x^2) / (1 + x + x^3); f(0) = 1")
 
 
+#df(x)/dx + (x + (1+3x^2) / (1+x+x^3)) f(x) = x^3 + 2x + x^2 * (1 + 3x^2) / (1 + x + x^3);
 class Loss(LossFunction):
     def _left_side_of_the_equation(self, function, *x):
         with tensorflow.GradientTape() as g:
