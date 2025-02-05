@@ -52,3 +52,40 @@ class TaskService:
             choose_plot = ChoosePlot(space, loss_array, PlotData("Convergence", ["epoch","loss"]))
             choose_plot.choose().plot()
 
+            threshold = (loss_array[0] - loss_array[len(loss_array) - 1]) / 10
+            intervals = self.__find_small_change_intervals(loss_array,threshold)
+            while threshold > loss_array[len(loss_array) - 1]:
+                for interval in intervals:
+                    start = interval[0]
+                    end = epoch
+                    if len(interval) >= 2:
+                        end = interval[1]
+
+                    loss_sub_array = loss_array[start:end]
+
+                    space = Space([numpy.linspace(start, end,end - start)])
+                    choose_plot = ChoosePlot(space, loss_sub_array, PlotData("Convergence", ["epoch", "loss"]))
+                    choose_plot.choose().plot()
+
+                threshold = threshold/10
+                intervals = self.__find_small_change_intervals(loss_array, threshold)
+
+
+    def __find_small_change_intervals(self, array, change_threshold):
+        intervals = []
+
+        i = 0
+        while i < len(array) - 1:
+            start = i
+            end = len(array)-1
+
+            if start != 0 and abs(array[start] - array[end]) <= change_threshold:
+
+                if end - start >= 4:
+                    intervals.append((start, end))
+                    return intervals
+
+            i += 1
+
+        return intervals
+
